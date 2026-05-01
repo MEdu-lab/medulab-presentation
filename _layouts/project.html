@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% assign proj = site.data.projects | where: "id", page.project_id | first %}
+  <title>{% if proj %}{{ proj.titolo }} — {% endif %}MEduLab</title>
+  <meta name="description" content="{% if proj %}{{ proj.scuola }} · {{ proj.anno }}{% else %}MEduLab progetto{% endif %}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation" aria-label="Navigazione principale">
+    <a class="navbar-logo" href="{{ '/' | relative_url }}">MEduLab</a>
+    <ul class="navbar-links" id="navbar-links">
+      <li><a href="{{ '/' | relative_url }}#progetti">Progetti</a></li>
+      <li><a href="{{ '/' | relative_url }}#chi-siamo">Chi Siamo</a></li>
+      <li><a href="{{ '/' | relative_url }}#metodologia">Metodologia</a></li>
+      <li><a href="{{ '/' | relative_url }}#contatti">Contatti</a></li>
+    </ul>
+    <button class="navbar-toggle" aria-label="Apri menu" aria-controls="navbar-links" aria-expanded="false">☰</button>
+  </nav>
+
+  <main class="project-page">
+
+    <a href="{{ '/' | relative_url }}#progetti" class="project-back">← Tutti i progetti</a>
+
+    {% if proj %}
+      {% assign level_class = "secondaria" %}
+      {% if proj.livello == "Infanzia" %}{% assign level_class = "infanzia" %}{% endif %}
+      {% if proj.livello == "Primaria"  %}{% assign level_class = "primaria"  %}{% endif %}
+
+      <div class="project-hero-level">
+        <span class="project-card-level project-card-level--{{ level_class }}">{{ proj.livello }}</span>
+      </div>
+
+      <h1 class="project-hero-title">{{ proj.titolo }}</h1>
+      <p class="project-hero-meta">{{ proj.scuola }} · {{ proj.anno }}</p>
+
+      {% if proj.fascia_eta and proj.fascia_eta != "" %}
+        <p class="project-description">Fascia d'età: {{ proj.fascia_eta }}</p>
+      {% endif %}
+
+      <!-- Video embed -->
+      {% if page.youtube_id and page.youtube_id != "" %}
+        <div class="project-video">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/{{ page.youtube_id }}"
+            title="{{ proj.titolo }}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+      {% endif %}
+
+      <!-- Actions -->
+      <div class="project-actions">
+        {% if page.google_photos_url and page.google_photos_url != "" %}
+          <a href="{{ page.google_photos_url }}" target="_blank" rel="noopener noreferrer" class="btn-photos">
+            ◼ Galleria Foto
+          </a>
+        {% endif %}
+        {% if proj.pdf_url and proj.pdf_url != "" %}
+          <a href="{{ proj.pdf_url }}" target="_blank" rel="noopener noreferrer" class="btn-pdf">
+            ↓ Scarica il Progetto (PDF)
+          </a>
+        {% endif %}
+      </div>
+
+    {% else %}
+      <p style="color: var(--c-muted);">Progetto non trovato.</p>
+    {% endif %}
+
+    {{ content }}
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contatti" class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <span class="footer-logo">MEduLab</span>
+          <p class="footer-tagline">{{ site.data.medulab.group.subtitle }} · {{ site.data.medulab.group.location }}</p>
+        </div>
+        <div class="footer-contact">
+          <h3>Contatti</h3>
+          <a href="mailto:{{ site.data.medulab.contact.email }}">{{ site.data.medulab.contact.email }}</a>
+        </div>
+      </div>
+      <p class="footer-bottom">© {% assign y = 'now' | date: '%Y' %}{{ y }} MEduLab · Roma</p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var btn   = document.querySelector('.navbar-toggle');
+      var links = document.getElementById('navbar-links');
+      if (!btn || !links) return;
+      btn.addEventListener('click', function() {
+        var open = links.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open);
+      });
+    })();
+  </script>
+
+</body>
+</html>

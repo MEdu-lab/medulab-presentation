@@ -15,6 +15,12 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
 
+# Jekyll collections
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name/
+
 # Esclusioni
 exclude:
   - README.md

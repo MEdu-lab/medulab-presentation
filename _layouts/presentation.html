@@ -1,75 +1,181 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ site.data.medulab.group.name }} - {{ site.data.medulab.group.subtitle }}</title>
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ site.data.medulab.group.name }} — {{ site.data.medulab.group.subtitle }}</title>
+  <meta name="description" content="{{ site.data.medulab.group.description | truncate: 160 }}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="header">
-        <h1>{{ site.data.medulab.group.name }}</h1>
-        <div class="subtitle">{{ site.data.medulab.group.subtitle }}</div>
-        <div class="contact-info">
-            {{ site.data.medulab.contact.email }} | {{ site.data.medulab.contact.phone }} | {{ site.data.medulab.group.location }}
+
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation" aria-label="Navigazione principale">
+    <a class="navbar-logo" href="{{ '/' | relative_url }}#top">MEduLab</a>
+    <ul class="navbar-links" id="navbar-links">
+      <li><a href="{{ '/' | relative_url }}#progetti">Progetti</a></li>
+      <li><a href="{{ '/' | relative_url }}#chi-siamo">Chi Siamo</a></li>
+      <li><a href="{{ '/' | relative_url }}#metodologia">Metodologia</a></li>
+      <li><a href="{{ '/' | relative_url }}#contatti">Contatti</a></li>
+    </ul>
+    <button class="navbar-toggle" aria-label="Apri menu" aria-controls="navbar-links" aria-expanded="false">☰</button>
+  </nav>
+
+  <!-- HERO -->
+  <section id="top" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <p class="hero-eyebrow">Laboratori di musica per bambini · Roma</p>
+        <h1 class="hero-title">{{ site.data.medulab.group.name }}</h1>
+        <p class="hero-tagline">{{ site.data.medulab.group.subtitle }}</p>
+        <p class="hero-description">{{ site.data.medulab.group.description }}</p>
+        <div class="hero-cta">
+          <a href="#progetti" class="btn-primary">Scopri i Progetti</a>
+          <a href="#contatti" class="btn-outline">Contattaci</a>
         </div>
-    </div>
-
-    <div class="section">
-        <h2>Chi Siamo</h2>
-        <p>{{ site.data.medulab.group.description }}</p>
-    </div>
-
-    <div class="section">
-        <h2>Esperienze Realizzate</h2>
-        {% for exp in site.data.medulab.experiences %}
-        <div class="experience-item">
-            <strong>{{ exp.school }}</strong> ({{ exp.years }}) — {{ exp.project }} — {{ exp.participants }} alunni
+      </div>
+      <div class="hero-image" aria-hidden="true">
+        <div class="hero-image-placeholder">
+          <svg viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 80 Q50 20 100 80 Q150 140 180 80" stroke="white" stroke-width="4" fill="none"/>
+            <circle cx="40" cy="110" r="12" fill="white" opacity="0.6"/>
+            <circle cx="100" cy="50" r="8"  fill="white" opacity="0.4"/>
+            <circle cx="160" cy="100" r="16" fill="white" opacity="0.3"/>
+            <path d="M60 130 L60 90 L75 95 L75 115 Z" fill="white" opacity="0.5"/>
+            <path d="M110 100 L110 60 L125 65 L125 85 Z" fill="white" opacity="0.4"/>
+          </svg>
         </div>
-        {% endfor %}
+      </div>
     </div>
+  </section>
 
-    <div class="section">
-        <h2>Metodologia</h2>
-        <p>Il gruppo ha sviluppato un approccio metodologico che integra ricerca musicale contemporanea e pratiche didattiche innovative, privilegiando:</p>
-        <ul class="methodology-list">
-            {% for method in site.data.medulab.methodology %}
-            <li>{{ method }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>Team di Progetto</h2>
-        <div class="team-grid">
-            {% for member in site.data.medulab.team %}
-            <div class="team-member">
-                <h3>{{ member.name }}</h3>
-                <div class="role">{{ member.role }}</div>
-                <div class="qualification">
-                    {{ member.qualification }}<br>
-                    {{ member.institution }}
+  <!-- PROGETTI -->
+  <section id="progetti" class="section section-projects">
+    <div class="container">
+      <span class="section-ghost-number" aria-hidden="true">01</span>
+      <div class="section-header">
+        <h2 class="section-title">I Nostri Progetti</h2>
+        <p class="section-subtitle">Percorsi didattici musicali nelle scuole di Roma</p>
+      </div>
+      <div class="projects-grid">
+        {% if site.data.projects %}
+          {% for p in site.data.projects %}
+            {% assign level_class = "secondaria" %}
+            {% if p.livello == "Infanzia" %}{% assign level_class = "infanzia" %}{% endif %}
+            {% if p.livello == "Primaria"  %}{% assign level_class = "primaria"  %}{% endif %}
+            <article class="project-card">
+              <div class="project-card-thumbnail">
+                {% if p.thumbnail and p.thumbnail != "" %}
+                  <img src="{{ p.thumbnail }}" alt="{{ p.titolo }}" loading="lazy">
+                {% else %}
+                  <div class="project-card-thumbnail-placeholder" aria-hidden="true">♫</div>
+                {% endif %}
+              </div>
+              <div class="project-card-body">
+                <span class="project-card-level project-card-level--{{ level_class }}">{{ p.livello }}</span>
+                <h3 class="project-card-title">{{ p.titolo }}</h3>
+                <p class="project-card-meta">{{ p.scuola | truncate: 60 }} · {{ p.anno }}</p>
+                {% if p.fascia_eta and p.fascia_eta != "" %}
+                  <p class="project-card-desc">Fascia d'età: {{ p.fascia_eta }}</p>
+                {% endif %}
+                <div class="project-card-media">
+                  {% if p.youtube_id and p.youtube_id != "" %}
+                    <span class="media-pill">▶ Video</span>
+                  {% endif %}
+                  {% if p.google_photos_url and p.google_photos_url != "" %}
+                    <span class="media-pill">◼ Foto</span>
+                  {% endif %}
+                  {% if p.pdf_url and p.pdf_url != "" %}
+                    <span class="media-pill">↓ PDF</span>
+                  {% endif %}
                 </div>
-            </div>
-            {% endfor %}
-        </div>
+                <a href="{{ site.baseurl }}/projects/{{ p.id }}/" class="project-card-link">
+                  Scopri il progetto <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          {% endfor %}
+        {% else %}
+          <p class="no-projects">I progetti saranno disponibili a breve.</p>
+        {% endif %}
+      </div>
     </div>
+  </section>
 
-    <div class="section">
-        <h2>Specializzazioni Complementari</h2>
-        {% for member in site.data.medulab.team %}
-        <p>
-            <strong>{{ member.name }}</strong> {{ member.specialization }}
+  <!-- CHI SIAMO -->
+  <section id="chi-siamo" class="section section-team">
+    <div class="container">
+      <span class="section-ghost-number" aria-hidden="true">02</span>
+      <div class="section-header">
+        <h2 class="section-title section-title--light">Chi Siamo</h2>
+        <p class="section-subtitle" style="color: rgba(250,248,245,0.55);">
+          Musicisti diplomati in Conservatorio, attivi nell'educazione musicale dal {{ site.data.medulab.group.founded }}
         </p>
+      </div>
+      <div class="team-grid">
+        {% for member in site.data.medulab.team %}
+          {% assign parts = member.name | split: ' ' %}
+          <div class="team-card">
+            <div class="team-card-avatar" aria-hidden="true">{{ parts[0] | slice: 0 }}{{ parts[1] | slice: 0 }}</div>
+            <div class="team-card-name">{{ member.name }}</div>
+            <div class="team-card-role">{{ member.role }}</div>
+            <div class="team-card-qualification">{{ member.qualification }}<br>{{ member.institution }}</div>
+            <p class="team-card-specialization">{{ member.specialization }}</p>
+          </div>
         {% endfor %}
+      </div>
     </div>
+  </section>
 
-    <div class="section">
-        <h2>Obiettivi del Gruppo</h2>
-        <p>{{ site.data.medulab.objectives }}</p>
+  <!-- METODOLOGIA -->
+  <section id="metodologia" class="section section-methodology">
+    <div class="container">
+      <span class="section-ghost-number" aria-hidden="true">03</span>
+      <div class="section-header">
+        <h2 class="section-title">Metodologia</h2>
+        <p class="section-subtitle">{{ site.data.medulab.objectives | truncate: 120 }}</p>
+      </div>
+      <ul class="methodology-list">
+        {% for method in site.data.medulab.methodology %}
+          <li>{{ method }}</li>
+        {% endfor %}
+      </ul>
     </div>
+  </section>
 
-    {{ content }}
+  <!-- FOOTER / CONTATTI -->
+  <footer id="contatti" class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <span class="footer-logo">MEduLab</span>
+          <p class="footer-tagline">{{ site.data.medulab.group.subtitle }} · {{ site.data.medulab.group.location }}</p>
+        </div>
+        <div class="footer-contact">
+          <h3>Contatti</h3>
+          <a href="mailto:{{ site.data.medulab.contact.email }}">{{ site.data.medulab.contact.email }}</a>
+        </div>
+      </div>
+      <p class="footer-bottom">© {% assign y = 'now' | date: '%Y' %}{{ y }} MEduLab · Roma</p>
+    </div>
+  </footer>
+
+  {{ content }}
+
+  <script>
+    (function() {
+      var btn   = document.querySelector('.navbar-toggle');
+      var links = document.getElementById('navbar-links');
+      if (!btn || !links) return;
+      btn.addEventListener('click', function() {
+        var open = links.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open);
+      });
+    })();
+  </script>
+
 </body>
 </html>
